@@ -1,20 +1,29 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
-    component: HomeView
+    // 动态引入
+    component: () => import('../views/HomeView.vue'),
+    children: [
+      {
+        path: 'goods',
+        name: 'good',
+        // 设置元信息，为了做动态路由，增加一个是否展示菜单的字段
+        meta: {
+          show: true
+        },
+        component: () => import('../views/GoodView.vue')
+      }
+    ]
   },
   {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+    path: '/login',
+    name: 'login',
+    // 动态引入
+    component: () => import('../views/LoginView.vue')
+  },
 ]
 
 const router = createRouter({
